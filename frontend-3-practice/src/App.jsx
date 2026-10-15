@@ -1,59 +1,105 @@
-// App — корневой компонент приложения.
-//
-// ЗАДАНИЕ
-// --------
-// Перенесите свою страницу выбора даты и времени из нативного JS
-// на React. У вас уже есть:
-//   - готовая вёрстка (HTML);
-//   - готовые стили (CSS);
-//   - рабочий код на нативном JS (валидация дат, рендер календаря,
-//     обработчики кликов, выбор слота).
-//
-// Теперь нужно то же самое сделать в React.
-//
-// ЧТО НУЖНО СДЕЛАТЬ
-// ------------------
-// 1. Разбить страницу на компоненты. Как именно — решайте сами.
-//    Обычно выделяют: шапку, подвал, календарь, сетку слотов,
-//    нижнюю панель.
-//
-// 2. Перенести вёрстку из HTML в JSX. Стили оставить как есть,
-//    просто положить их в тот же проект (например, в src/styles/
-//    или рядом с компонентами).
-//
-// 3. Заменить нативное состояние (переменные + прямые манипуляции
-//    с DOM) на useState. Какие именно данные должны жить в состоянии —
-//    подумайте сами. Скорее всего: текущий месяц, выбранный день,
-//    выбранное время, массив слотов.
-//
-// 4. Рендер календаря и слотов делать через JSX и .map(),
-//    без innerHTML и querySelector.
-//
-// 5. Обработчики кликов — через onClick прямо в JSX,
-//    без addEventListener.
-//
-// 6. Функции для работы с датами, которые вы уже написали
-//    на нативном JS (построение сетки календаря, сравнение дат,
-//    проверка «не раньше сегодня»), можно переиспользовать.
-//    Они чистые — не зависят от React. Создайте файл
-//    src/utils/date.js и перенесите их туда.
-//
-//
-// ПОДСКАЗКА
-// ---------
-// Если что-то не работает или непонятно, как перевести нативный
-// код на React — вернитесь к лекции. Там разбирались все
-// основные приёмы: состояние, пропсы, рендер списков, колбэки.
-//
-// Ниже — пустой каркас. Здесь можно начать писать.
+import { useState } from "react";
+import Header from "./components/Header";
+import ProgressBar from "./components/ProgressBar";
+import Calendar from "./components/Calendar";
+import TimeSlots from "./components/TimeSlots";
+import SelectionInfo from "./components/SelectionInfo";
+import Footer from "./components/Footer";
+import { SERVER_DATA, getSlotsForDay } from "./data/slots";
 
-function App() {
+export default function App() {
+  const today = SERVER_DATA.today;
+
+  const [currentMonth, setCurrentMonth] = useState(today.month);
+  const [currentYear, setCurrentYear] = useState(today.year);
+  const [selectedDay, setSelectedDay] = useState(today.day);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [slots, setSlots] = useState(getSlotsForDay(today.day));
+
+  function handleSelectDay(day) {
+    setSelectedDay(day);
+    setSelectedTime(null);
+    setSlots(getSlotsForDay(day));
+  }
+
+  function handleSelectTime(time) {
+    setSelectedTime(time);
+  }
+
+  function handlePrevMonth() {
+    if (currentMonth === 0) {
+      setCurrentMonth(11);
+      setCurrentYear((y) => y - 1);
+    } else {
+      setCurrentMonth((m) => m - 1);
+    }
+  }
+
+  function handleNextMonth() {
+    if (currentMonth === 11) {
+      setCurrentMonth(0);
+      setCurrentYear((y) => y + 1);
+    } else {
+      setCurrentMonth((m) => m + 1);
+    }
+  }
+
+  function handleSubmit() {
+    if (!selectedTime) {
+      alert("Пожалуйста, выберите время");
+      return;
+    }
+    const booking = {
+      date: { day: selectedDay, month: currentMonth, year: currentYear },
+      time: selectedTime,
+    };
+    localStorage.setItem("atelier-booking", JSON.stringify(booking));
+    console.log("Сохранено:", booking);
+  }
+
   return (
-    <div>
-      {/* Начните отсюда. Например, разметьте .page, добавьте шапку,
-            основную область, подвал. */}
-    </div>
+    <>
+      <Header />
+      <ProgressBar />
+      <main className="main-content">
+        <div className="page-title">
+          <h2>Дата и время</h2>
+          <p className="subtitle">
+            Анна Морозова • Кератиновое выпрямление • 6 часов
+          </p>
+        </div>
+        <div className="booking-container">
+          <Calendar
+            year={currentYear}
+            month={currentMonth}
+            selectedDay={selectedDay}
+            today={today}
+            onSelectDay={handleSelectDay}
+            onPrevMonth={handlePrevMonth}
+            onNextMonth={handleNextMonth}
+          />
+          <div className="slots-column">
+            <TimeSlots
+              slots={slots}
+              selectedTime={selectedTime}
+              selectedDay={selectedDay}
+              month={currentMonth}
+              year={currentYear}
+              onSelectTime={handleSelectTime}
+            />
+            <SelectionInfo
+              day={selectedDay}
+              month={currentMonth}
+              year={currentYear}
+              time={selectedTime}
+            />
+            <button type="button" className="btn-submit" onClick={handleSubmit}>
+              Продолжить
+            </button>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </>
   );
 }
-
-export default App;
