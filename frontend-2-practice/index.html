@@ -1,14 +1,103 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Выбор даты и времени</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="page">
-      <!-- Перенесите вашу верстку. Удалите статичные данные. Подключите скрипт -->
-    </div>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atelier - Выбор даты и времени</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <h1>atelier</h1>
+            <span>beauty studio</span>
+        </div>
+
+        <nav class="progress-bar">
+            <div class="step done">
+                <div class="step-dot"></div>
+                <span class="step-label">Мастер</span>
+            </div>
+            <div class="step done">
+                <div class="step-dot"></div>
+                <span class="step-label">Услуга</span>
+            </div>
+            <div class="step active">
+                <div class="step-dot"></div>
+                <span class="step-label">Дата и время</span>
+            </div>
+            <div class="step">
+                <div class="step-dot"></div>
+                <span class="step-label">Контакты</span>
+            </div>
+            <div class="step">
+                <div class="step-dot"></div>
+                <span class="step-label">Готово</span>
+            </div>
+        </nav>
+
+        <div class="header-links">
+            <a href="#">Услуги</a>
+            <a href="#">Мастера</a>
+            <a href="#">Контакты</a>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="page-title">
+            <h2>Дата и время</h2>
+            <p class="subtitle">Анна Морозова • Кератиновое выпрямление • 6 часов</p>
+        </div>
+
+        <div class="booking-container">
+            <section class="calendar-section">
+                <div class="calendar-header">
+                    <h3 id="calendarTitle">Октябрь 2026</h3>
+                    <div class="calendar-nav">
+                        <button class="arrow-btn" type="button" id="prevMonth" aria-label="Предыдущий месяц">‹</button>
+                        <button class="arrow-btn" type="button" id="nextMonth" aria-label="Следующий месяц">›</button>
+                    </div>
+                </div>
+                <div class="calendar-grid" id="calendarGrid">
+                    <div class="weekday">Пн</div>
+                    <div class="weekday">Вт</div>
+                    <div class="weekday">Ср</div>
+                    <div class="weekday">Чт</div>
+                    <div class="weekday">Пт</div>
+                    <div class="weekday">Сб</div>
+                    <div class="weekday">Вс</div>
+                </div>
+            </section>
+
+            <section class="slots-section">
+                <h3>Свободные слоты</h3>
+                <p class="slots-date" id="slotsDate">Четверг, 15 октября</p>
+                
+                <div class="slots-grid" id="slotsGrid"></div>
+
+                <div class="selection-info">
+                    <span class="selection-label">Выбрано</span>
+                    <span class="selection-value" id="selectionValue">—</span>
+                </div>
+
+                <button type="button" class="btn-submit">Продолжить</button>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-left">
+            <p>atelier · beauty studio</p>
+        </div>
+        <div class="footer-center">
+            <p>Ежедневно 09:00–21:00</p>
+        </div>
+        <div class="footer-right">
+            <p>Ярославль, ул. Свободы</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
 </html>
