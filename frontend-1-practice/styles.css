@@ -223,6 +223,9 @@ body {
     border-radius: 50%;
     font-size: 14px;
     color: var(--text-primary);
+    background: none;
+    border: none;
+    font-family: inherit;
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease;
     margin: 0 auto;
@@ -275,11 +278,12 @@ body {
     color: var(--text-primary);
     font-size: 14px;
     font-weight: 500;
+    font-family: inherit;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.1s ease;
+    transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
 }
 
-.slot:hover:not(.disabled) {
+.slot:hover:not(.disabled):not(.selected) {
     background-color: #e8dcdc;
 }
 
@@ -292,6 +296,16 @@ body {
     color: var(--disabled-text);
     cursor: default;
     pointer-events: none;
+}
+
+.slot.selected {
+    background-color: var(--accent-color);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(155, 107, 117, 0.3);
+}
+
+.slot.selected:hover {
+    background-color: #8a5c65;
 }
 
 .selection-info {
@@ -326,6 +340,7 @@ body {
     border-radius: 12px;
     font-size: 15px;
     font-weight: 500;
+    font-family: inherit;
     cursor: pointer;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -395,5 +410,57 @@ body {
 
     .footer-right {
         text-align: center;
+    }
+}
+
+@media (max-width: 380px) {
+    .main-content {
+        padding: 20px 12px;
+    }
+
+    .booking-container {
+        padding: 16px;
+        gap: 24px;
+    }
+
+    .calendar-grid {
+        gap: 6px;
+    }
+
+    .day {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+
+    .weekday {
+        font-size: 10px;
+        letter-spacing: 0;
+    }
+
+    .slots-grid {
+        gap: 8px;
+    }
+
+    .slot {
+        padding: 10px;
+        font-size: 13px;
+        border-radius: 8px;
+    }
+
+    .page-title h2 {
+        font-size: 22px;
+    }
+
+    .calendar-header h3,
+    .slots-section h3 {
+        font-size: 14px;
+    }
+
+    .step-label {
+        font-size: 9px;
+        white-space: normal;
+        word-break: break-word;
+        max-width: 60px;
     }
 }
