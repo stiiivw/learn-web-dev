@@ -247,6 +247,9 @@ body {
 
 .day.today {
     font-weight: 700;
+}
+
+.day.today:not(.selected) {
     color: var(--accent-color);
 }
 
