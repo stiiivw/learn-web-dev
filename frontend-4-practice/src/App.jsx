@@ -23,28 +23,36 @@ export default function App() {
   const [selectedTime, setSelectedTime] = useState(null);
 
   useEffect(() => {
+    let cancelled = false;
     async function loadToday() {
       try {
         setTodayLoading(true);
         setTodayError(null);
         const data = await fetchToday();
+        if (cancelled) return;
         setToday(data);
         setCurrentMonth(data.month);
         setCurrentYear(data.year);
         setSelectedDay(data.day);
       } catch (err) {
+        if (cancelled) return;
         setTodayError(err.message);
       } finally {
-        setTodayLoading(false);
+        if (!cancelled) setTodayLoading(false);
       }
     }
     loadToday();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
     if (selectedDay === null || currentMonth === null || currentYear === null) {
       return;
     }
+
+    let cancelled = false;
 
     async function loadSlots() {
       try {
@@ -55,15 +63,21 @@ export default function App() {
           month: currentMonth,
           year: currentYear,
         });
+        if (cancelled) return;
         setSlots(data.slots);
       } catch (err) {
+        if (cancelled) return;
         setSlotsError(err.message);
         setSlots([]);
       } finally {
-        setSlotsLoading(false);
+        if (!cancelled) setSlotsLoading(false);
       }
     }
     loadSlots();
+
+    return () => {
+      cancelled = true;
+    };
   }, [selectedDay, currentMonth, currentYear]);
 
   function handleSelectDay(day) {
@@ -75,21 +89,32 @@ export default function App() {
     setSelectedTime(time);
   }
 
+  function resetSelection(newMonth, newYear) {
+    setCurrentMonth(newMonth);
+    setCurrentYear(newYear);
+    if (!today) return;
+
+    const isCurrentMonth =
+      newYear === today.year && newMonth === today.month;
+    const fallbackDay = isCurrentMonth ? today.day : 1;
+
+    setSelectedDay(fallbackDay);
+    setSelectedTime(null);
+  }
+
   function handlePrevMonth() {
     if (currentMonth === 0) {
-      setCurrentMonth(11);
-      setCurrentYear((y) => y - 1);
+      resetSelection(11, currentYear - 1);
     } else {
-      setCurrentMonth((m) => m - 1);
+      resetSelection(currentMonth - 1, currentYear);
     }
   }
 
   function handleNextMonth() {
     if (currentMonth === 11) {
-      setCurrentMonth(0);
-      setCurrentYear((y) => y + 1);
+      resetSelection(0, currentYear + 1);
     } else {
-      setCurrentMonth((m) => m + 1);
+      resetSelection(currentMonth + 1, currentYear);
     }
   }
 
