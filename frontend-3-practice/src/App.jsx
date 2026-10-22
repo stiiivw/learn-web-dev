@@ -26,21 +26,34 @@ export default function App() {
     setSelectedTime(time);
   }
 
+  // Сброс выбора при переключении месяца
+  function resetSelection(newMonth, newYear) {
+    setCurrentMonth(newMonth);
+    setCurrentYear(newYear);
+
+    // Если в новом месяце есть «сегодня» — выбираем его. Иначе — 1-е число.
+    const isCurrentMonth =
+      newYear === today.year && newMonth === today.month;
+    const fallbackDay = isCurrentMonth ? today.day : 1;
+
+    setSelectedDay(fallbackDay);
+    setSelectedTime(null);
+    setSlots(getSlotsForDay(fallbackDay));
+  }
+
   function handlePrevMonth() {
     if (currentMonth === 0) {
-      setCurrentMonth(11);
-      setCurrentYear((y) => y - 1);
+      resetSelection(11, currentYear - 1);
     } else {
-      setCurrentMonth((m) => m - 1);
+      resetSelection(currentMonth - 1, currentYear);
     }
   }
 
   function handleNextMonth() {
     if (currentMonth === 11) {
-      setCurrentMonth(0);
-      setCurrentYear((y) => y + 1);
+      resetSelection(0, currentYear + 1);
     } else {
-      setCurrentMonth((m) => m + 1);
+      resetSelection(currentMonth + 1, currentYear);
     }
   }
 
