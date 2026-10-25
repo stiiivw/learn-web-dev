@@ -201,6 +201,10 @@ body {
     color: var(--text-primary);
 }
 
+.arrow-btn:disabled {
+    pointer-events: none;
+}
+
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
