@@ -26,14 +26,11 @@ export default function App() {
     setSelectedTime(time);
   }
 
-  // Сброс выбора при переключении месяца
   function resetSelection(newMonth, newYear) {
     setCurrentMonth(newMonth);
     setCurrentYear(newYear);
-
-    // Если в новом месяце есть «сегодня» — выбираем его. Иначе — 1-е число.
-    const isCurrentMonth =
-      newYear === today.year && newMonth === today.month;
+    
+    const isCurrentMonth = newYear === today.year && newMonth === today.month;
     const fallbackDay = isCurrentMonth ? today.day : 1;
 
     setSelectedDay(fallbackDay);
