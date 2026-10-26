@@ -23,7 +23,6 @@ export default function App() {
 
   const [selectedTime, setSelectedTime] = useState(null);
 
-  // Загрузка сегодняшней даты
   useEffect(() => {
     let cancelled = false;
     async function loadToday() {
@@ -49,7 +48,6 @@ export default function App() {
     };
   }, []);
 
-  // Загрузка слотов (с защитой от устаревших ответов)
   useEffect(() => {
     if (selectedDay === null || currentMonth === null || currentYear === null) {
       return;
@@ -108,15 +106,11 @@ export default function App() {
   function handlePrevMonth() {
     if (!today) return;
     
-    // Проверка: не уходим в прошлое
-    if (!isMonthNotPast(currentMonth - 1, currentYear, today) && currentMonth !== 0) {
-      return;
-    }
-
     if (currentMonth === 0) {
       if (!isMonthNotPast(11, currentYear - 1, today)) return;
       resetSelection(11, currentYear - 1);
     } else {
+      if (!isMonthNotPast(currentMonth - 1, currentYear, today)) return;
       resetSelection(currentMonth - 1, currentYear);
     }
   }
