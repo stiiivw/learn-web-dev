@@ -29,10 +29,8 @@ export default function App() {
   function resetSelection(newMonth, newYear) {
     setCurrentMonth(newMonth);
     setCurrentYear(newYear);
-    
     const isCurrentMonth = newYear === today.year && newMonth === today.month;
     const fallbackDay = isCurrentMonth ? today.day : 1;
-
     setSelectedDay(fallbackDay);
     setSelectedTime(null);
     setSlots(getSlotsForDay(fallbackDay));
